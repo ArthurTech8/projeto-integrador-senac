@@ -1,0 +1,10 @@
+{
+  // Configuração do TypeScript para os testes (pasta testes/). Mesmas regras do código: strict e sem "any".
+  // Entra no "npm run typecheck": teste com erro de tipo também para o build.
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    // "node" para os testes de contrato, que leem arquivos do backend e do banco
+    "types": ["vite/client", "node"]
+  },
+  "include": ["testes/**/*.ts", "src/**/*.ts", "src/**/*.vue"]
+}

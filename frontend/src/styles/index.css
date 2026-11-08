@@ -1,0 +1,5 @@
+/* Estilos globais, na ordem: variáveis → base → classes reutilizáveis.
+   O estilo específico de cada componente fica no <style scoped> do próprio .vue. */
+@import './tokens.css';
+@import './base.css';
+@import './componentes.css';

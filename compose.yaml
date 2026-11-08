@@ -1,0 +1,14 @@
+# Dois containers: a API (C#) e o site (Vue). O banco fica online, no alwaysdata.
+services:
+  api:
+    build: ./backend
+    ports: ["8080:8080"]
+    env_file: .env
+
+  web:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: http://localhost:8080
+    ports: ["3000:80"]
+    depends_on: [api]

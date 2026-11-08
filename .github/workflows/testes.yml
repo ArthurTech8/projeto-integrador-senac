@@ -1,0 +1,40 @@
+# Roda todos os testes a cada push e pull request. Vermelho = a mudança quebrou algo.
+# Usa o mesmo compose.testes.yaml que roda na sua máquina.
+name: Testes
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: testes-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  frontend:
+    name: Frontend (tipos + testes)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: docker compose -f compose.testes.yaml run --rm testes-web
+
+  api:
+    name: API (C# + MySQL de teste)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: docker compose -f compose.testes.yaml run --rm testes-api
+
+  imagens:
+    name: Build das imagens (docker compose)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      # o compose.yaml pede um .env; no CI usamos o de exemplo (sem senha)
+      - run: cp .env.example .env
+      - run: docker compose build

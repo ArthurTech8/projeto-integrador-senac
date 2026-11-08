@@ -1,0 +1,44 @@
+# Testes automatizados (sem instalar .NET nem Node). NÃO é o compose do sistema:
+# o "banco-teste" é um MySQL descartável só para os testes da API (os testes recriam os bancos a cada rodada).
+# O banco de verdade continua no alwaysdata, e o compose.yaml continua sem serviço de banco.
+#
+#   docker compose -f compose.testes.yaml run --rm testes-web   → tipos + testes do Vue
+#   docker compose -f compose.testes.yaml run --rm testes-api   → testes da API (C#) com MySQL de teste
+#   docker compose -f compose.testes.yaml down -v               → desliga e apaga o MySQL de teste
+name: mural-testes
+
+services:
+  banco-teste:
+    # 8.0: a imagem 8.4 trava (segfault) em algumas máquinas com Docker Desktop
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: senha-so-de-teste
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-psenha-so-de-teste"]
+      interval: 3s
+      timeout: 3s
+      retries: 40
+
+  testes-api:
+    image: mcr.microsoft.com/dotnet/sdk:10.0
+    working_dir: /projeto/backend-testes
+    volumes:
+      - .:/projeto
+      - /projeto/backend/bin
+      - /projeto/backend/obj
+      - /projeto/backend-testes/bin
+      - /projeto/backend-testes/obj
+    environment:
+      TESTE_BANCO: "Server=banco-teste;User=root;Password=senha-so-de-teste;AllowPublicKeyRetrieval=true"
+    depends_on:
+      banco-teste:
+        condition: service_healthy
+    command: ["dotnet", "test"]
+
+  testes-web:
+    image: node:24-alpine
+    working_dir: /projeto/frontend
+    volumes:
+      - .:/projeto
+      - /projeto/frontend/node_modules
+    command: ["sh", "-c", "npm install --no-package-lock --no-audit --no-fund && npm run typecheck && npm test"]

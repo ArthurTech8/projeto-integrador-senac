@@ -1,0 +1,7 @@
+// Ponto único de importação: import { CATEGORIAS, CURSOS } from '@/config'
+export * from './instituicao'
+export * from './categorias'
+export * from './cursos'
+export * from './mensagens'
+export * from './perfis'
+export * from './fundos'

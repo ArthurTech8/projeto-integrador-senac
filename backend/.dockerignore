@@ -1,0 +1,5 @@
+bin/
+obj/
+# segredo nunca entra na imagem (a API recebe pelo env_file do compose)
+.env
+.env.*

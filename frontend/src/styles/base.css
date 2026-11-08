@@ -1,0 +1,77 @@
+/* ---------- Base: reset, tipografia, toque e utilitários ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;          /* o celular deitado não aumenta a letra sozinho */
+  -webkit-tap-highlight-color: transparent; /* sem o "flash" cinza ao tocar; cada controle tem seu :active */
+}
+
+body {
+  margin: 0;
+  background: var(--fundo);
+  color: var(--texto);
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3 {
+  color: var(--texto-forte);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  text-wrap: balance;          /* títulos quebram em linhas de tamanho parecido */
+}
+p { text-wrap: pretty; }       /* evita uma palavra sozinha na última linha */
+
+a { color: var(--primaria); }
+
+:focus-visible { outline: 3px solid var(--foco); outline-offset: 2px; }
+
+img, svg { display: block; }
+
+/* Controles de toque: resposta imediata (sem a espera do duplo toque)
+   e sem selecionar o texto do botão quando o dedo fica parado em cima. */
+button, a, [role='button'], summary, label:has(> input[type='checkbox']) {
+  touch-action: manipulation;
+}
+button, [role='button'], .botao {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Campos com no mínimo 16px: abaixo disso o iPhone dá zoom na página ao tocar no campo */
+input, select, textarea, button { font: inherit; }
+input, select, textarea { font-size: 1rem; }
+
+/* largura máxima do conteúdo, com respiro nas laterais (e longe do "notch" no celular deitado) */
+.container {
+  width: 100%;
+  max-width: var(--largura);
+  margin: 0 auto;
+  padding-left: max(var(--respiro-lateral), env(safe-area-inset-left, 0px));
+  padding-right: max(var(--respiro-lateral), env(safe-area-inset-right, 0px));
+}
+
+/* esconde da tela, mas leitores de tela continuam lendo */
+.visualmente-oculto {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap; border: 0; padding: 0; margin: -1px;
+}
+
+.secao { margin: 40px 0; }
+
+/* Números que mudam ou se alinham em coluna (contadores, dias) não "dançam" de largura */
+.numeros { font-variant-numeric: tabular-nums; }
+
+/* Movimento reduzido = menos movimento, não zero: some todo deslocamento e escala,
+   mas cor, sombra e opacidade continuam mudando de leve (ajudam a entender o que aconteceu). */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-property: color, background-color, border-color, box-shadow, opacity, outline-color !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}

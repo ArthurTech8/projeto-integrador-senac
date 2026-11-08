@@ -1,0 +1,5 @@
+node_modules/
+dist/
+# segredo nunca entra na imagem
+.env
+.env.*

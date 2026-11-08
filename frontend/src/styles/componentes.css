@@ -1,0 +1,115 @@
+/* ---------- Classes reutilizáveis em várias telas ----------
+   Regra de hover: todo :hover fica dentro de @media (hover: hover) and (pointer: fine).
+   No celular o toque "gruda" o hover; lá a resposta vem do :active. */
+
+/* Grade de cards (GradeAvisos.vue define --coluna-minima) */
+.grade {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--coluna-minima, 300px)), 1fr));
+  gap: 16px;
+}
+
+/* Painel branco usado em formulários, filtros e listas laterais */
+.painel {
+  padding: clamp(16px, 3vw, 24px);
+  background: var(--superficie);
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
+}
+
+/* Selos */
+.selo {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 8px; border-radius: var(--raio-pilula);
+  font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+.selo-urgente { background: var(--urgente); color: #fff; }
+.selo-novo { background: var(--destaque); color: var(--primaria-escura); }
+.selo-encerrado { background: var(--neutro-fundo); color: var(--neutro); }
+
+/* Botões */
+.botao {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 44px; padding: 0 18px;
+  border: 1px solid transparent; border-radius: var(--raio-medio);
+  background: var(--primaria); color: #fff;
+  font: inherit; font-weight: 600; font-size: 0.95rem;
+  text-decoration: none; cursor: pointer;
+  transition:
+    background-color var(--duracao-curta) ease,
+    border-color var(--duracao-curta) ease,
+    transform var(--duracao-toque) var(--suave-saida);
+}
+.botao:active:not(:disabled) { transform: scale(0.97); }
+.botao:disabled { opacity: 0.55; cursor: not-allowed; }
+.botao-secundario { background: var(--superficie); color: var(--primaria); border-color: var(--borda); }
+.botao-perigo { background: var(--superficie); color: var(--urgente); border-color: var(--urgente-borda); }
+.botao-pequeno { min-height: 36px; padding: 0 12px; font-size: 0.85rem; border-radius: var(--raio-pequeno); }
+
+/* no toque, o fundo muda enquanto o dedo está em cima */
+.botao:active:not(:disabled) { background: var(--primaria-escura); }
+.botao-secundario:active:not(:disabled) { background: var(--primaria-clara); }
+.botao-perigo:active:not(:disabled) { background: var(--urgente-fundo); }
+
+@media (hover: hover) and (pointer: fine) {
+  .botao:hover:not(:disabled) { background: var(--primaria-escura); }
+  .botao-secundario:hover:not(:disabled) { background: var(--primaria-clara); border-color: var(--borda-forte); }
+  .botao-perigo:hover:not(:disabled) { background: var(--urgente-fundo); border-color: var(--urgente); }
+}
+
+/* Campos de formulário: <label class="campo"><span>Rótulo</span><input /></label> */
+/* align-content: start → rótulo e campo ficam presos ao topo. Sem isso, num par de campos lado a lado
+   em que só um tem dica embaixo (<small>), o outro é esticado e a sobra empurra o input para baixo. */
+.campo { display: grid; gap: 6px; min-width: 0; align-content: start; }
+.campo > span { font-size: 0.85rem; font-weight: 600; color: var(--texto-forte); }
+.campo input, .campo select, .campo textarea {
+  width: 100%; min-height: 44px; padding: 8px 12px;
+  border: 1px solid var(--borda); border-radius: var(--raio-medio);
+  background: var(--superficie); color: var(--texto);
+  font: inherit; font-size: 1rem; /* 16px: menos que isso e o iPhone dá zoom */
+  transition: border-color var(--duracao-curta) ease, box-shadow var(--duracao-curta) ease;
+}
+.campo input:focus-visible, .campo select:focus-visible, .campo textarea:focus-visible {
+  outline: none;
+  border-color: var(--primaria);
+  box-shadow: 0 0 0 3px rgba(242, 183, 5, 0.55);
+}
+.campo input::placeholder, .campo textarea::placeholder { color: #8a93ab; }
+.campo select:disabled, .campo input:disabled { background: var(--superficie-suave); color: var(--texto-suave); }
+.campo textarea { min-height: 120px; resize: vertical; line-height: 1.6; }
+.campo small { color: var(--texto-suave); font-size: 0.8rem; }
+
+@media (hover: hover) and (pointer: fine) {
+  .campo input:hover:not(:focus-visible):not(:disabled),
+  .campo select:hover:not(:focus-visible):not(:disabled),
+  .campo textarea:hover:not(:focus-visible) { border-color: var(--borda-forte); }
+}
+
+.caixa-marcar {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 36px;
+  font-size: 0.92rem; cursor: pointer;
+}
+.caixa-marcar input { width: 18px; height: 18px; margin: 0; accent-color: var(--primaria); }
+
+/* Mensagens e estados (EstadoCarregamento.vue / EstadoVazio.vue).
+   Elas aparecem de repente depois de uma ação: um fade curto evita o "pulo". */
+.mensagem {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 10px;
+  padding: 12px 16px; border-radius: var(--raio);
+  background: var(--superficie); border: 1px solid var(--borda);
+  overflow-wrap: anywhere;
+  transition: opacity var(--duracao-media) var(--suave-saida), transform var(--duracao-media) var(--suave-saida);
+}
+@starting-style {
+  .mensagem { opacity: 0; transform: translateY(-4px); }
+}
+.mensagem-erro { background: var(--urgente-fundo); border-color: var(--urgente-borda); color: var(--urgente); }
+.mensagem-sucesso { background: var(--sucesso-fundo); border-color: var(--sucesso-borda); color: var(--sucesso); }
+
+.vazio {
+  padding: 40px 16px; text-align: center; color: var(--texto-suave);
+  background: var(--superficie); border: 1px dashed var(--borda-forte); border-radius: var(--raio);
+}
+
+.carregando { color: var(--texto-suave); padding: 24px 0; }

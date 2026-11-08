@@ -1,0 +1,147 @@
+### Testes da API do Mural do Aluno — use "Send Request" (extensão REST Client)
+# Criar, editar e excluir exigem login: rode primeiro o "Entrar" (o REST Client guarda o cookie
+# de sessão e o manda nos pedidos seguintes). Troque e-mail e senha pelos do seu .env (AdminInicial__*).
+@base = http://localhost:8080
+@email = admin@exemplo.com
+@senha = TROQUE_ESTA_SENHA
+
+### API no ar?
+GET {{base}}/
+
+### ---------- Sessão ----------
+
+### Quem sou eu, sem login (espera 204)
+GET {{base}}/api/auth/eu
+
+### Tentar criar aviso sem login (espera 401)
+POST {{base}}/api/avisos
+Content-Type: application/json
+
+{ "titulo": "x", "resumo": "x", "descricao": "x", "categoria": "curso" }
+
+### Login com senha errada (espera 401 "E-mail ou senha incorretos.")
+POST {{base}}/api/auth/entrar
+Content-Type: application/json
+
+{ "email": "{{email}}", "senha": "senha-errada" }
+
+### Entrar (espera 200 com o usuário; grava o cookie mural_sessao)
+POST {{base}}/api/auth/entrar
+Content-Type: application/json
+
+{ "email": "{{email}}", "senha": "{{senha}}" }
+
+### Quem sou eu, logado (espera 200)
+GET {{base}}/api/auth/eu
+
+### ---------- Usuários (só admin) ----------
+
+### Lista usuários
+GET {{base}}/api/usuarios
+
+### Cadastra um editor (espera 201)
+POST {{base}}/api/usuarios
+Content-Type: application/json
+
+{ "nome": "Editor Teste", "email": "editor@exemplo.com", "perfil": "editor", "senha": "senha-do-editor" }
+
+### Cadastra um aluno (espera 201; aluno exige curso)
+POST {{base}}/api/usuarios
+Content-Type: application/json
+
+{ "nome": "Aluno Teste", "email": "aluno@exemplo.com", "perfil": "aluno", "curso": "Tecnologia da Informação", "senha": "senha-do-aluno" }
+
+### Altera um usuário (troque o id; senha vazia = mantém a atual; espera 204)
+PUT {{base}}/api/usuarios/2
+Content-Type: application/json
+
+{ "nome": "Editor Teste (alterado)", "email": "editor@exemplo.com", "perfil": "editor", "senha": "" }
+
+### Exclui um usuário (só muda ativo = 0; espera 204)
+DELETE {{base}}/api/usuarios/2
+
+### ---------- Minha conta ----------
+
+### Troca a própria senha (espera 204; depois use a nova no "Entrar")
+PUT {{base}}/api/conta/senha
+Content-Type: application/json
+
+{ "senhaAtual": "{{senha}}", "novaSenha": "{{senha}}" }
+
+### ---------- Avisos ----------
+
+### Lista todos os avisos
+GET {{base}}/api/avisos
+
+### Busca um aviso pelo id
+GET {{base}}/api/avisos/1
+
+### Busca um id que não existe (espera 404)
+GET {{base}}/api/avisos/99999
+
+### Cadastra um aviso de teste (espera 201)
+POST {{base}}/api/avisos
+Content-Type: application/json
+
+{
+  "titulo": "Aviso de teste",
+  "resumo": "Criado pelo arquivo Api.http.",
+  "descricao": "Pode excluir este aviso depois do teste.",
+  "categoria": "extracurricular",
+  "curso": "Todos os cursos",
+  "dataInicio": "2026-12-01",
+  "dataFim": "2026-12-01",
+  "localizacao": "Sala 10",
+  "vagas": 15,
+  "certificado": false,
+  "urgente": false
+}
+
+### Cadastro inválido (espera 400)
+POST {{base}}/api/avisos
+Content-Type: application/json
+
+{
+  "titulo": "",
+  "resumo": "Sem título",
+  "descricao": "Deve falhar",
+  "categoria": "festa"
+}
+
+### Altera o aviso (troque o id pelo que voltou no POST; espera 204)
+PUT {{base}}/api/avisos/1
+Content-Type: application/json
+
+{
+  "titulo": "Feriado: Proclamação da República",
+  "resumo": "Domingo, 15/11. Não há aulas no sábado letivo de 14/11.",
+  "descricao": "Texto alterado pelo Api.http.",
+  "categoria": "calendario",
+  "curso": "Todos os cursos",
+  "dataInicio": "2026-11-15",
+  "urgente": false
+}
+
+### Exclui um aviso (troque o id pelo do aviso de teste; espera 204)
+# No banco a linha NÃO é apagada: só muda para ativo = 0 (confira no phpMyAdmin)
+DELETE {{base}}/api/avisos/20
+
+### Excluir de novo o mesmo aviso (espera 404: já foi excluído)
+DELETE {{base}}/api/avisos/20
+
+### Aviso excluído não é mais encontrado (espera 404)
+GET {{base}}/api/avisos/20
+
+### Editar aviso excluído (espera 404)
+PUT {{base}}/api/avisos/20
+Content-Type: application/json
+
+{
+  "titulo": "Não deve alterar",
+  "resumo": "x",
+  "descricao": "x",
+  "categoria": "curso"
+}
+
+### Sair (apaga o cookie; espera 204)
+POST {{base}}/api/auth/sair

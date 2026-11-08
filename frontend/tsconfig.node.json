@@ -1,0 +1,18 @@
+{
+  // Configuração do TypeScript para arquivos que rodam no Node (vite.config.ts e vitest.config.ts)
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "lib": ["ES2023"],
+    "types": ["node"],
+    "strict": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    // o vitest.config.ts importa "./vite.config.ts" com a extensão (pedido pelo Vite)
+    "allowImportingTsExtensions": true
+  },
+  "include": ["vite.config.ts", "vitest.config.ts"]
+}

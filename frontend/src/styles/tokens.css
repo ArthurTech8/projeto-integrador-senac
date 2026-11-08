@@ -1,0 +1,66 @@
+/* ---------- Cores, medidas, sombras e movimento (design tokens) ----------
+   Mude aqui para trocar a identidade visual do site inteiro. */
+:root {
+  /* Cores da marca */
+  --primaria: #14306b;
+  --primaria-escura: #0c1f4a;
+  --primaria-clara: #e8eefb;
+  --destaque: #f2b705;
+  --destaque-claro: #ffc928;
+
+  /* Superfícies e texto */
+  --fundo: #f4f6fa;
+  --superficie: #ffffff;
+  --superficie-suave: #f8f9fc;
+  --borda: #dde3ee;
+  --borda-forte: #c5cede;
+  --texto: #29324a;
+  --texto-forte: #0f1a33;
+  --texto-suave: #5b6683;
+  --foco: #f2b705;
+
+  /* Estados */
+  --urgente: #c62828;
+  --urgente-fundo: #fff6f6;
+  --urgente-borda: #f3c4c4;
+  --sucesso: #1b7f4b;
+  --sucesso-fundo: #ecf8f1;
+  --sucesso-borda: #bfe5cf;
+  --neutro: #4b5470;
+  --neutro-fundo: #eef0f4;
+
+  /* Cantos */
+  --raio-pequeno: 8px;
+  --raio-medio: 10px;
+  --raio: 12px;
+  --raio-pilula: 999px;
+
+  /* Sombras: o contorno é uma sombra translúcida, não uma borda sólida,
+     para o card se misturar com qualquer fundo. */
+  --contorno: 0 0 0 1px rgba(15, 26, 51, 0.08);
+  --sombra: var(--contorno), 0 1px 2px rgba(15, 26, 51, 0.05);
+  --sombra-media: var(--contorno), 0 4px 12px -2px rgba(15, 26, 51, 0.1);
+  --sombra-alta: 0 0 0 1px rgba(15, 26, 51, 0.06), 0 12px 28px -10px rgba(15, 26, 51, 0.25);
+
+  /* Medidas */
+  --largura: 1120px;
+  --altura-cabecalho: 72px;
+  --respiro-lateral: 16px;
+
+  /* Movimento: curvas fortes (as do CSS são fracas demais) e durações curtas.
+     Entrar/sair → --suave-saida. Mexer no lugar → --suave-meio. Cor/hover → ease. */
+  --suave-saida: cubic-bezier(0.23, 1, 0.32, 1);
+  --suave-meio: cubic-bezier(0.77, 0, 0.175, 1);
+  --duracao-toque: 140ms;     /* resposta ao apertar */
+  --duracao-curta: 180ms;     /* cor, sombra, hover */
+  --duracao-media: 220ms;     /* menu, mensagens que aparecem */
+
+  color-scheme: light;
+}
+
+/* Cor de cada categoria: qualquer elemento com data-cat="..." recebe --cat e --cat-fundo.
+   Categoria nova = uma linha nova aqui. */
+[data-cat='calendario']      { --cat: #1d5fd1; --cat-fundo: #e6efff; }
+[data-cat='extracurricular'] { --cat: #12805c; --cat-fundo: #e2f5ee; }
+[data-cat='emprego']         { --cat: #b8520d; --cat-fundo: #fdeedf; }
+[data-cat='curso']           { --cat: #7040c9; --cat-fundo: #f0e9fd; }
