@@ -54,24 +54,31 @@ const prazo = computed(() => (fechado.value ? '' : rotuloPrazo(props.aviso)))
   padding: 20px 18px 16px;
   background: var(--superficie);
   border-radius: var(--raio);
-  box-shadow: inset 0 4px 0 var(--faixa), var(--contorno-card), 0 1px 2px rgba(15, 26, 51, 0.05);
+  box-shadow: inset 0 4px 0 var(--faixa), var(--contorno-card), var(--profundidade);
   color: inherit;
   text-decoration: none;
   transition:
     box-shadow var(--duracao-curta) ease,
-    transform var(--duracao-toque) var(--suave-saida);
+    transform var(--duracao-curta) var(--suave-saida);
 }
-/* toque: afunda de leve, confirma que o site "ouviu" */
-.card:active { transform: scale(0.985); }
 .card.urgente { --faixa: var(--urgente); --contorno-card: 0 0 0 1px var(--urgente-borda); background: var(--urgente-fundo); }
 .card.fechado { opacity: 0.65; }
 
-/* hover só com mouse, e sem "pular": a sombra cresce, o card fica no lugar */
+/* hover só com mouse: o card sobe 2px e a sombra se afasta, como se ele saísse do fundo (efeito 3D) */
 @media (hover: hover) and (pointer: fine) {
   .card:hover {
-    box-shadow: inset 0 4px 0 var(--faixa), var(--contorno-card), 0 12px 28px -10px rgba(15, 26, 51, 0.25);
+    transform: translateY(-2px);
+    box-shadow: inset 0 4px 0 var(--faixa), var(--contorno-card), var(--profundidade-erguida);
   }
   .card:hover .ver { color: var(--primaria-escura); }
+}
+/* toque (e clique): afunda de leve, confirma que o site "ouviu".
+   Fica depois do hover para valer também com o mouse em cima. */
+.card:active { transform: scale(0.985); }
+
+/* reduzir movimento: sem subir; a sombra continua mudando */
+@media (prefers-reduced-motion: reduce) {
+  .card:hover { transform: none; }
 }
 
 /* título sem espaço (link, código) quebra em vez de vazar do card */

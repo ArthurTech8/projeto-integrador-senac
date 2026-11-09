@@ -9,6 +9,27 @@
   gap: 16px;
 }
 
+/* Miolo das telas: degradê da marca (tokens.css → --fundo-miolo) e, por cima dele, a textura
+   de pontinhos, que vai sumindo para baixo. Os cards ficam acima dos dois e parecem flutuar.
+   Usado no <main> do LayoutPadrao e, na página inicial, logo abaixo do banner (que cobre o topo do main).
+   - display: flow-root → a margem de cima do primeiro filho (ex.: o título da tela) fica DENTRO do miolo.
+     Sem isso ela "vaza" para fora e abre um vão sem degradê entre o cabeçalho e o conteúdo.
+   - isolation → o ::before com z-index -1 fica preso no miolo: atrás do conteúdo, na frente do degradê. */
+.miolo {
+  position: relative;
+  isolation: isolate;
+  display: flow-root;
+  background: var(--fundo-miolo);
+}
+.miolo::before {
+  content: '';
+  position: absolute; inset: 0; z-index: -1;
+  pointer-events: none;
+  background: var(--textura-miolo);
+  -webkit-mask-image: linear-gradient(to bottom, #000, transparent 75%);
+  mask-image: linear-gradient(to bottom, #000, transparent 75%);
+}
+
 /* Painel branco usado em formulários, filtros e listas laterais */
 .painel {
   padding: clamp(16px, 3vw, 24px);

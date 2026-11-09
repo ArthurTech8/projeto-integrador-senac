@@ -46,7 +46,7 @@ const ehHoje = computed(() => mesmoDia(data.value, hoje()))
 .item {
   display: flex; align-items: center; gap: 14px; padding: 12px 14px 12px 18px;
   background: var(--superficie); border-radius: var(--raio-medio);
-  box-shadow: inset 4px 0 0 var(--cat), var(--sombra);
+  box-shadow: inset 4px 0 0 var(--cat), var(--sombra-leve);
   color: inherit; text-decoration: none;
   transition: box-shadow var(--duracao-curta) ease, background-color var(--duracao-curta) ease, transform var(--duracao-toque) var(--suave-saida);
 }
@@ -65,7 +65,7 @@ const ehHoje = computed(() => mesmoDia(data.value, hoje()))
 .item.compacto .texto small { font-size: 0.78rem; }
 
 @media (hover: hover) and (pointer: fine) {
-  .item:not(.compacto):hover { box-shadow: inset 4px 0 0 var(--cat), var(--sombra-media); }
+  .item:not(.compacto):hover { box-shadow: inset 4px 0 0 var(--cat), var(--sombra); }
   .item.compacto:hover { background: var(--fundo); }
 }
 

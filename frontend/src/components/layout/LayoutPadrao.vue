@@ -8,7 +8,8 @@ import RodapeSite from './RodapeSite.vue'
 <template>
   <a class="pular" href="#conteudo">Pular para o conteúdo</a>
   <CabecalhoSite />
-  <main id="conteudo">
+  <!-- .miolo (styles/componentes.css): fundo em degradê da marca, com o conteúdo flutuando por cima -->
+  <main id="conteudo" class="miolo">
     <slot />
   </main>
   <RodapeSite />
@@ -23,5 +24,5 @@ import RodapeSite from './RodapeSite.vue'
 .pular:focus { top: 12px; }
 
 /* svh = a menor altura da tela no celular: o rodapé nunca "pula" quando a barra do navegador some */
-main { min-height: 70vh; min-height: 70svh; padding-bottom: 56px; }
+main { min-height: 70vh; min-height: 70svh; padding-bottom: var(--respiro-rodape); }
 </style>

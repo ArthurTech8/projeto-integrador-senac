@@ -39,7 +39,7 @@ defineEmits<{
 <style scoped>
 .item {
   display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
-  padding: 12px 14px; background: var(--superficie); border-radius: var(--raio-medio); box-shadow: var(--sombra);
+  padding: 12px 14px; background: var(--superficie); border-radius: var(--raio-medio); box-shadow: var(--sombra-leve);
   transition: box-shadow var(--duracao-curta) ease;
 }
 /* o item em edição fica marcado: contorno azul + halo claro */
