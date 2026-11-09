@@ -51,38 +51,48 @@ function buscar(): void {
     </div>
   </section>
 
-  <div class="container">
-    <AtalhosCategorias class="atalhos" :contagem="contagem" :carregando="carregando" />
+  <!-- O banner cobre o topo do <main>, onde o degradê é mais colorido.
+       Por isso o miolo recomeça aqui, logo abaixo do banner (.miolo em styles/componentes.css). -->
+  <div class="miolo miolo-inicio">
+    <div class="container">
+      <AtalhosCategorias class="atalhos" :contagem="contagem" :carregando="carregando" />
 
-    <EstadoCarregamento :carregando="carregando" :erro="erro" texto-carregando="Carregando avisos…" @tentar-de-novo="carregar">
-      <section v-if="urgentes.length" class="secao" aria-labelledby="t-urgentes">
-        <CabecalhoSecao id="t-urgentes" titulo="Atenção: avisos urgentes">
-          <template #antes><span class="ponto-urgente" aria-hidden="true"></span></template>
-        </CabecalhoSecao>
-        <GradeAvisos :avisos="urgentes" />
-      </section>
-
-      <div class="duas-colunas secao">
-        <section aria-labelledby="t-recentes">
-          <CabecalhoSecao id="t-recentes" titulo="Publicados recentemente" :link="{ para: '/avisos', texto: 'Ver todos os avisos' }" />
-          <GradeAvisos :avisos="recentes" :coluna-minima="260">
-            <template #vazio><EstadoVazio>Nenhum aviso publicado por enquanto.</EstadoVazio></template>
-          </GradeAvisos>
+      <EstadoCarregamento :carregando="carregando" :erro="erro" texto-carregando="Carregando avisos…" @tentar-de-novo="carregar">
+        <section v-if="urgentes.length" class="secao" aria-labelledby="t-urgentes">
+          <CabecalhoSecao id="t-urgentes" titulo="Atenção: avisos urgentes">
+            <template #antes><span class="ponto-urgente" aria-hidden="true"></span></template>
+          </CabecalhoSecao>
+          <GradeAvisos :avisos="urgentes" />
         </section>
 
-        <aside class="painel-datas" aria-labelledby="t-datas" data-cat="calendario">
-          <CabecalhoSecao id="t-datas" titulo="Próximas datas" :link="{ para: '/calendario', texto: 'Calendário' }" />
-          <ol v-if="datas.length" class="datas">
-            <li v-for="aviso in datas" :key="aviso.id"><ItemCalendario :aviso="aviso" compacto /></li>
-          </ol>
-          <EstadoVazio v-else>Sem datas próximas.</EstadoVazio>
-        </aside>
-      </div>
-    </EstadoCarregamento>
+        <div class="duas-colunas secao">
+          <section aria-labelledby="t-recentes">
+            <CabecalhoSecao id="t-recentes" titulo="Publicados recentemente" :link="{ para: '/avisos', texto: 'Ver todos os avisos' }" />
+            <GradeAvisos :avisos="recentes" :coluna-minima="260">
+              <template #vazio><EstadoVazio>Nenhum aviso publicado por enquanto.</EstadoVazio></template>
+            </GradeAvisos>
+          </section>
+
+          <aside class="painel-datas" aria-labelledby="t-datas" data-cat="calendario">
+            <CabecalhoSecao id="t-datas" titulo="Próximas datas" :link="{ para: '/calendario', texto: 'Calendário' }" />
+            <ol v-if="datas.length" class="datas">
+              <li v-for="aviso in datas" :key="aviso.id"><ItemCalendario :aviso="aviso" compacto /></li>
+            </ol>
+            <EstadoVazio v-else>Sem datas próximas.</EstadoVazio>
+          </aside>
+        </div>
+      </EstadoCarregamento>
+    </div>
   </div>
 </template>
 
 <style scoped>
+/* o miolo da inicial vai até o rodapé: cobre também o respiro de baixo do <main> (sem emenda no degradê) */
+.miolo-inicio {
+  margin-bottom: calc(-1 * var(--respiro-rodape));
+  padding-bottom: var(--respiro-rodape);
+}
+
 .hero {
   /* o gradiente azul continua por baixo: aparece enquanto a primeira foto carrega */
   position: relative;

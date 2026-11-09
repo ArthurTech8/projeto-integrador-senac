@@ -48,7 +48,7 @@ withDefaults(defineProps<{
 .atalho:active { transform: scale(0.98); }
 /* hover só com mouse: o contorno ganha a cor da categoria, sem deslocar o cartão */
 @media (hover: hover) and (pointer: fine) {
-  .atalho:hover { box-shadow: 0 0 0 1.5px var(--cat), 0 12px 28px -10px rgba(15, 26, 51, 0.25); }
+  .atalho:hover { box-shadow: 0 0 0 1.5px var(--cat), var(--profundidade-erguida); }
 }
 
 .icone {

@@ -74,7 +74,7 @@ function ir(numero: number): void {
   display: inline-flex; align-items: center; justify-content: center; gap: 4px;
   min-width: 40px; min-height: 40px; padding: 0 10px;
   border: 0; border-radius: var(--raio-medio);
-  background: var(--superficie); color: var(--texto); box-shadow: var(--sombra);
+  background: var(--superficie); color: var(--texto); box-shadow: var(--sombra-leve);
   font: inherit; font-size: 0.92rem; font-weight: 600; cursor: pointer;
   transition: background-color var(--duracao-curta) ease, color var(--duracao-curta) ease, transform var(--duracao-toque) var(--suave-saida);
 }
